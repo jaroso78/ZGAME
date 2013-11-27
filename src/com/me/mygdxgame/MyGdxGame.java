@@ -11,55 +11,75 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class MyGdxGame implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
 	
+	private Texture textura; //Declaramos la textura que es la imagen.
+	private OrthographicCamera camara; //Declaramos la cámara para mostrar imágenes.
+	private SpriteBatch spriteb;
+	
+	
+	
+	//Método Create  del juego.
 	@Override
 	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+	
+		//Rescatamos el tamaño de la ventana que hemos creado independientemente
+		//del dispositivo rescatandolo de los proyectos.
+		int w = Gdx.graphics.getWidth();
+		int h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
+		//Creamos la cámara del tamaño de la ventana.
+		camara = new OrthographicCamera(w,h);
+		spriteb = new SpriteBatch();
 		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		//Creamos la textura y cargamos la imagen mediante el procedimiento siguiente
+		//dado que se encuentra dentro del proyecto.
+		textura = new Texture(Gdx.files.internal("data/images1.png"));
 		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
 		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 	}
 
+	
+	//Método para eliminar de memoria aquellos objetos que por si java 
+	// no elimina.
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
+		spriteb.dispose(); //Método para eliminar el SpriteBatch.
+		textura.dispose(); //Método para eiliminar la Textura.
 	}
 
+	
+	//Método para diburjar en pantalla.
 	@Override
 	public void render() {		
+		//Indicamos el color con el que queremos eliminar la pantalla.
 		Gdx.gl.glClearColor(1, 1, 1, 1);
+		
+		//Eliminamos la pantalla utilizando la función de opengl.
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		sprite.draw(batch);
-		batch.end();
+		//Indicamos al spritebatch que empezamos.
+		spriteb.begin();
+		//Dibujamos el spritebatch en la posición 0,0
+		spriteb.draw(textura,0,0);
+		//Y le indicamos con éste método que finalizamos.
+		spriteb.end();
+	
+		
 	}
 
+	
+	//Método para indicar a la ventan que hacer cuando se redimensiona.
 	@Override
 	public void resize(int width, int height) {
 	}
-
+	
+	//Método para índicar al sistema que hacer cuando el juego entra ne modo pausa.
 	@Override
 	public void pause() {
 	}
 
+	//Método para indicar al juego que hacer cuanod vuelve a iniciarse después de una 
+	//pausa.
 	@Override
 	public void resume() {
 	}
